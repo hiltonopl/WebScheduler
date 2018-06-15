@@ -1,0 +1,558 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SchedulerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BLOCK">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="PlannedStartDate" Type="DateTime" Precision="0" />
+    <Property Name="PlannedStartTime" Type="Time" Precision="7" />
+    <Property Name="PlannedEndDate" Type="DateTime" Precision="0" />
+    <Property Name="PlannedEndTime" Type="Time" Precision="7" />
+    <Property Name="ActualStartDate" Type="DateTime" Precision="0" />
+    <Property Name="ActualStartTime" Type="Time" Precision="7" />
+    <Property Name="ActualEndDate" Type="DateTime" Precision="0" />
+    <Property Name="ActualEndTime" Type="Time" Precision="7" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="Int32" />
+    <Property Name="LastModifiedBy" Type="Int32" />
+    <Property Name="ID" Type="Guid" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CUSTOMER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="Firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Lastname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Notes" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="INVOICE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="InvoiceNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="JobID" Type="Guid" />
+    <Property Name="Discount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="DueDate" Type="DateTime" Precision="0" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CustomerID" Type="Int32" />
+    <NavigationProperty Name="JOB" Relationship="Self.FK__INVOICE__JobID__489AC854" FromRole="INVOICE" ToRole="JOB" />
+  </EntityType>
+  <EntityType Name="JOB">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="JobTypeID" Type="Guid" />
+    <Property Name="BlockID" Type="Guid" />
+    <Property Name="WorkerID" Type="Int32" />
+    <Property Name="CustomerID" Type="Guid" />
+    <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Cost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ToolID" Type="Int32" />
+    <Property Name="MarketerID" Type="Int32" />
+    <NavigationProperty Name="INVOICEs" Relationship="Self.FK__INVOICE__JobID__489AC854" FromRole="JOB" ToRole="INVOICE" />
+    <NavigationProperty Name="SYSUserProfile" Relationship="Self.FK__JOB__MarketerID__5224328E" FromRole="JOB" ToRole="SYSUserProfile" />
+    <NavigationProperty Name="TOOL" Relationship="Self.FK__JOB__ToolID__503BEA1C" FromRole="JOB" ToRole="TOOL" />
+    <NavigationProperty Name="SYSUserProfile1" Relationship="Self.FK__JOB__WorkerID__51300E55" FromRole="JOB" ToRole="SYSUserProfile" />
+    <NavigationProperty Name="TOOLs" Relationship="Self.FK__TOOL__JobID__4F47C5E3" FromRole="JOB" ToRole="TOOL" />
+  </EntityType>
+  <EntityType Name="JOBBLOCK">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="BlockId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="JobId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="JOBTOOL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ToolId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="JOBTYPE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="Duration" Type="Int32" />
+    <Property Name="Unit" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Rate" Type="Double" />
+    <Property Name="SkillRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WorkersRequired" Type="Int32" />
+    <Property Name="Tools" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ToolCost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="FacilitiesRequired" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="FacilitiesCost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AccountCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+    <Property Name="JobPrice" Type="Decimal" Precision="19" Scale="4" />
+  </EntityType>
+  <EntityType Name="JOBWORKER">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="WorkerId" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="LOOKUPRole">
+    <Key>
+      <PropertyRef Name="LOOKUPRoleID" />
+    </Key>
+    <Property Name="LOOKUPRoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="RoleDescription" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="RowCreatedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowCreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="RowModifiedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowModifiedDateTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="SYSUserRoles" Relationship="Self.FK__SYSUserRo__LOOKU__02FC7413" FromRole="LOOKUPRole" ToRole="SYSUserRole" />
+    <NavigationProperty Name="SYSUserRoles1" Relationship="Self.FK__SYSUserRo__LOOKU__68487DD7" FromRole="LOOKUPRole" ToRole="SYSUserRole" />
+  </EntityType>
+  <EntityType Name="PAYMENT">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="ReceiptNo" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="Payment1" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="PaymentDate" Type="DateTime" Precision="0" />
+    <Property Name="JobID" Type="Guid" />
+    <Property Name="Reference" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentType" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+    <Property Name="CollectedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="InvoiceID" Type="Int32" />
+    <Property Name="PaymentTypeID" Type="Guid" />
+    <Property Name="PaymentMethodId" Type="Int32" />
+  </EntityType>
+  <EntityType Name="PAYMENTMETHOD">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <EntityType Name="PAYMENTTYPE">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Guid" Nullable="false" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="AccountCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="SYSUser">
+    <Key>
+      <PropertyRef Name="SYSUserID" />
+    </Key>
+    <Property Name="SYSUserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LoginName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PasswordEncryptedText" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="RowCreatedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowCreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="RowModifiedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowModifiedDateTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="SYSUserProfiles" Relationship="Self.FK__SYSUserPr__SYSUs__628FA481" FromRole="SYSUser" ToRole="SYSUserProfile" />
+    <NavigationProperty Name="SYSUserRoles" Relationship="Self.FK__SYSUserRo__SYSUs__03F0984C" FromRole="SYSUser" ToRole="SYSUserRole" />
+    <NavigationProperty Name="SYSUserRoles1" Relationship="Self.FK__SYSUserRo__SYSUs__693CA210" FromRole="SYSUser" ToRole="SYSUserRole" />
+  </EntityType>
+  <EntityType Name="SYSUserProfile">
+    <Key>
+      <PropertyRef Name="SYSUserProfileID" />
+    </Key>
+    <Property Name="SYSUserProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="RowCreatedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowCreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="RowModifiedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowModifiedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserTypeID" Type="Int32" />
+    <Property Name="ID" Type="Guid" />
+    <NavigationProperty Name="JOBs" Relationship="Self.FK__JOB__MarketerID__5224328E" FromRole="SYSUserProfile" ToRole="JOB" />
+    <NavigationProperty Name="JOBs1" Relationship="Self.FK__JOB__WorkerID__51300E55" FromRole="SYSUserProfile" ToRole="JOB" />
+    <NavigationProperty Name="SYSUser" Relationship="Self.FK__SYSUserPr__SYSUs__628FA481" FromRole="SYSUserProfile" ToRole="SYSUser" />
+    <NavigationProperty Name="UserType" Relationship="Self.FK__SYSUserPr__UserT__17036CC0" FromRole="SYSUserProfile" ToRole="UserType" />
+  </EntityType>
+  <EntityType Name="SYSUserRole">
+    <Key>
+      <PropertyRef Name="SYSUserRoleID" />
+    </Key>
+    <Property Name="SYSUserRoleID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="LOOKUPRoleID" Type="Int32" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="RowCreatedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowCreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="RowModifiedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowModifiedDateTime" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="LOOKUPRole" Relationship="Self.FK__SYSUserRo__LOOKU__02FC7413" FromRole="SYSUserRole" ToRole="LOOKUPRole" />
+    <NavigationProperty Name="LOOKUPRole1" Relationship="Self.FK__SYSUserRo__LOOKU__68487DD7" FromRole="SYSUserRole" ToRole="LOOKUPRole" />
+    <NavigationProperty Name="SYSUser" Relationship="Self.FK__SYSUserRo__SYSUs__03F0984C" FromRole="SYSUserRole" ToRole="SYSUser" />
+    <NavigationProperty Name="SYSUser1" Relationship="Self.FK__SYSUserRo__SYSUs__693CA210" FromRole="SYSUserRole" ToRole="SYSUser" />
+  </EntityType>
+  <EntityType Name="TOOL">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UnitCost" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="Unit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="JobID" Type="Guid" />
+    <Property Name="GUIDID" Type="Guid" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CreationDate" Type="DateTime" Precision="3" />
+    <Property Name="LastModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="JOBs" Relationship="Self.FK__JOB__ToolID__503BEA1C" FromRole="TOOL" ToRole="JOB" />
+    <NavigationProperty Name="JOB" Relationship="Self.FK__TOOL__JobID__4F47C5E3" FromRole="TOOL" ToRole="JOB" />
+  </EntityType>
+  <EntityType Name="UserType">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserType1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SYSUserProfiles" Relationship="Self.FK__SYSUserPr__UserT__17036CC0" FromRole="UserType" ToRole="SYSUserProfile" />
+  </EntityType>
+  <EntityType Name="MARKETER">
+    <Key>
+      <PropertyRef Name="SYSUserProfileID" />
+      <PropertyRef Name="SYSUserID" />
+      <PropertyRef Name="FirstName" />
+      <PropertyRef Name="LastName" />
+      <PropertyRef Name="Gender" />
+      <PropertyRef Name="RowCreatedSYSUserID" />
+      <PropertyRef Name="RowModifiedSYSUserID" />
+    </Key>
+    <Property Name="ID" Type="Guid" />
+    <Property Name="SYSUserProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="RowCreatedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowCreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="RowModifiedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowModifiedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserTypeID" Type="Int32" />
+  </EntityType>
+  <EntityType Name="WORKER">
+    <Key>
+      <PropertyRef Name="SYSUserProfileID" />
+      <PropertyRef Name="SYSUserID" />
+      <PropertyRef Name="FirstName" />
+      <PropertyRef Name="LastName" />
+      <PropertyRef Name="Gender" />
+      <PropertyRef Name="RowCreatedSYSUserID" />
+      <PropertyRef Name="RowModifiedSYSUserID" />
+    </Key>
+    <Property Name="ID" Type="Guid" />
+    <Property Name="SYSUserProfileID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="RowCreatedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowCreatedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="RowModifiedSYSUserID" Type="Int32" Nullable="false" />
+    <Property Name="RowModifiedDateTime" Type="DateTime" Precision="3" />
+    <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UserTypeID" Type="Int32" />
+  </EntityType>
+  <Association Name="FK__INVOICE__JobID__489AC854">
+    <End Role="JOB" Type="Self.JOB" Multiplicity="0..1" />
+    <End Role="INVOICE" Type="Self.INVOICE" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JOB">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="INVOICE">
+        <PropertyRef Name="JobID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__JOB__MarketerID__5224328E">
+    <End Role="SYSUserProfile" Type="Self.SYSUserProfile" Multiplicity="0..1" />
+    <End Role="JOB" Type="Self.JOB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYSUserProfile">
+        <PropertyRef Name="SYSUserProfileID" />
+      </Principal>
+      <Dependent Role="JOB">
+        <PropertyRef Name="MarketerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__JOB__ToolID__503BEA1C">
+    <End Role="TOOL" Type="Self.TOOL" Multiplicity="0..1" />
+    <End Role="JOB" Type="Self.JOB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TOOL">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="JOB">
+        <PropertyRef Name="ToolID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__JOB__WorkerID__51300E55">
+    <End Role="SYSUserProfile" Type="Self.SYSUserProfile" Multiplicity="0..1" />
+    <End Role="JOB" Type="Self.JOB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYSUserProfile">
+        <PropertyRef Name="SYSUserProfileID" />
+      </Principal>
+      <Dependent Role="JOB">
+        <PropertyRef Name="WorkerID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TOOL__JobID__4F47C5E3">
+    <End Role="JOB" Type="Self.JOB" Multiplicity="0..1" />
+    <End Role="TOOL" Type="Self.TOOL" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="JOB">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TOOL">
+        <PropertyRef Name="JobID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SYSUserRo__LOOKU__02FC7413">
+    <End Role="LOOKUPRole" Type="Self.LOOKUPRole" Multiplicity="1" />
+    <End Role="SYSUserRole" Type="Self.SYSUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LOOKUPRole">
+        <PropertyRef Name="LOOKUPRoleID" />
+      </Principal>
+      <Dependent Role="SYSUserRole">
+        <PropertyRef Name="LOOKUPRoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SYSUserRo__LOOKU__68487DD7">
+    <End Role="LOOKUPRole" Type="Self.LOOKUPRole" Multiplicity="1" />
+    <End Role="SYSUserRole" Type="Self.SYSUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LOOKUPRole">
+        <PropertyRef Name="LOOKUPRoleID" />
+      </Principal>
+      <Dependent Role="SYSUserRole">
+        <PropertyRef Name="LOOKUPRoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SYSUserPr__SYSUs__628FA481">
+    <End Role="SYSUser" Type="Self.SYSUser" Multiplicity="1" />
+    <End Role="SYSUserProfile" Type="Self.SYSUserProfile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYSUser">
+        <PropertyRef Name="SYSUserID" />
+      </Principal>
+      <Dependent Role="SYSUserProfile">
+        <PropertyRef Name="SYSUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SYSUserRo__SYSUs__03F0984C">
+    <End Role="SYSUser" Type="Self.SYSUser" Multiplicity="1" />
+    <End Role="SYSUserRole" Type="Self.SYSUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYSUser">
+        <PropertyRef Name="SYSUserID" />
+      </Principal>
+      <Dependent Role="SYSUserRole">
+        <PropertyRef Name="SYSUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SYSUserRo__SYSUs__693CA210">
+    <End Role="SYSUser" Type="Self.SYSUser" Multiplicity="1" />
+    <End Role="SYSUserRole" Type="Self.SYSUserRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYSUser">
+        <PropertyRef Name="SYSUserID" />
+      </Principal>
+      <Dependent Role="SYSUserRole">
+        <PropertyRef Name="SYSUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SYSUserPr__UserT__17036CC0">
+    <End Role="UserType" Type="Self.UserType" Multiplicity="0..1" />
+    <End Role="SYSUserProfile" Type="Self.SYSUserProfile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="UserType">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="SYSUserProfile">
+        <PropertyRef Name="UserTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SchedulerEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BLOCKs" EntityType="Self.BLOCK" />
+    <EntitySet Name="CUSTOMERs" EntityType="Self.CUSTOMER" />
+    <EntitySet Name="INVOICEs" EntityType="Self.INVOICE" />
+    <EntitySet Name="JOBs" EntityType="Self.JOB" />
+    <EntitySet Name="JOBBLOCKs" EntityType="Self.JOBBLOCK" />
+    <EntitySet Name="JOBTOOLs" EntityType="Self.JOBTOOL" />
+    <EntitySet Name="JOBTYPEs" EntityType="Self.JOBTYPE" />
+    <EntitySet Name="JOBWORKERs" EntityType="Self.JOBWORKER" />
+    <EntitySet Name="LOOKUPRoles" EntityType="Self.LOOKUPRole" />
+    <EntitySet Name="PAYMENTs" EntityType="Self.PAYMENT" />
+    <EntitySet Name="PAYMENTMETHODs" EntityType="Self.PAYMENTMETHOD" />
+    <EntitySet Name="PAYMENTTYPEs" EntityType="Self.PAYMENTTYPE" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="SYSUsers" EntityType="Self.SYSUser" />
+    <EntitySet Name="SYSUserProfiles" EntityType="Self.SYSUserProfile" />
+    <EntitySet Name="SYSUserRoles" EntityType="Self.SYSUserRole" />
+    <EntitySet Name="TOOLs" EntityType="Self.TOOL" />
+    <EntitySet Name="UserTypes" EntityType="Self.UserType" />
+    <EntitySet Name="MARKETERs" EntityType="Self.MARKETER" />
+    <EntitySet Name="WORKERs" EntityType="Self.WORKER" />
+    <AssociationSet Name="FK__INVOICE__JobID__489AC854" Association="Self.FK__INVOICE__JobID__489AC854">
+      <End Role="JOB" EntitySet="JOBs" />
+      <End Role="INVOICE" EntitySet="INVOICEs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__JOB__MarketerID__5224328E" Association="Self.FK__JOB__MarketerID__5224328E">
+      <End Role="SYSUserProfile" EntitySet="SYSUserProfiles" />
+      <End Role="JOB" EntitySet="JOBs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__JOB__ToolID__503BEA1C" Association="Self.FK__JOB__ToolID__503BEA1C">
+      <End Role="TOOL" EntitySet="TOOLs" />
+      <End Role="JOB" EntitySet="JOBs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__JOB__WorkerID__51300E55" Association="Self.FK__JOB__WorkerID__51300E55">
+      <End Role="SYSUserProfile" EntitySet="SYSUserProfiles" />
+      <End Role="JOB" EntitySet="JOBs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TOOL__JobID__4F47C5E3" Association="Self.FK__TOOL__JobID__4F47C5E3">
+      <End Role="JOB" EntitySet="JOBs" />
+      <End Role="TOOL" EntitySet="TOOLs" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SYSUserRo__LOOKU__02FC7413" Association="Self.FK__SYSUserRo__LOOKU__02FC7413">
+      <End Role="LOOKUPRole" EntitySet="LOOKUPRoles" />
+      <End Role="SYSUserRole" EntitySet="SYSUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SYSUserRo__LOOKU__68487DD7" Association="Self.FK__SYSUserRo__LOOKU__68487DD7">
+      <End Role="LOOKUPRole" EntitySet="LOOKUPRoles" />
+      <End Role="SYSUserRole" EntitySet="SYSUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SYSUserPr__SYSUs__628FA481" Association="Self.FK__SYSUserPr__SYSUs__628FA481">
+      <End Role="SYSUser" EntitySet="SYSUsers" />
+      <End Role="SYSUserProfile" EntitySet="SYSUserProfiles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SYSUserRo__SYSUs__03F0984C" Association="Self.FK__SYSUserRo__SYSUs__03F0984C">
+      <End Role="SYSUser" EntitySet="SYSUsers" />
+      <End Role="SYSUserRole" EntitySet="SYSUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SYSUserRo__SYSUs__693CA210" Association="Self.FK__SYSUserRo__SYSUs__693CA210">
+      <End Role="SYSUser" EntitySet="SYSUsers" />
+      <End Role="SYSUserRole" EntitySet="SYSUserRoles" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SYSUserPr__UserT__17036CC0" Association="Self.FK__SYSUserPr__UserT__17036CC0">
+      <End Role="UserType" EntitySet="UserTypes" />
+      <End Role="SYSUserProfile" EntitySet="SYSUserProfiles" />
+    </AssociationSet>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(SchedulerModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(SchedulerModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+</Schema>
